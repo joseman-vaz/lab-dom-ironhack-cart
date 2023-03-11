@@ -27,10 +27,34 @@ function removeProduct(event) {
   console.log("The target in remove is:", target);
 }
 // ITERATION 5
-
-function createProduct() {
+const addItemButton = document.getElementById("create");
+addItemButton.addEventListener("click", createProduct);
+function createProduct(event) {
   //... your code goes here
-  const createButton = document.getElementById("#create");
+  // const newProduct = document.querySelector(".create-product");
+  const newItemName = document.querySelector(".buttonNewName").value;
+  const newItemPrice = document.querySelector(".buttonNewPrice").value;
+  if (!newItemName || !newItemPrice) {
+    return false;
+  } else {
+    const myElement = document.createElement("tr");
+    myElement.className = "product";
+    myElement.innerHTML = `
+    <td class="name">
+      <span>${newItemName}</span>
+    </td>
+    <td class="price">$<span>${parseInt(newItemPrice).toFixed(2)}</span></td>
+    <td class="quantity">
+      <input type="number" value="0" min="0" placeholder="Quantity" />
+    </td>
+    <td class="subtotal">$<span></span></td>
+    <td class="action">
+      <button class="btn btn-remove">Remove</button>
+    </td>
+  `;
+    const parentElement = document.querySelector("tbody");
+    parentElement.append(myElement);
+  }
 }
 
 window.addEventListener("load", () => {
@@ -38,12 +62,9 @@ window.addEventListener("load", () => {
   calculatePricesBtn.addEventListener("click", calculateAll);
 
   let removeItemsButtons = document.querySelectorAll(".btn-remove");
-  console.log(removeItemsButtons);
   for (let i = 0; i < removeItemsButtons.length; i++) {
     let button = removeItemsButtons[i];
-    console.log(button);
     button.addEventListener("click", function (event) {
-      console.log("clicked");
       let buttonClicked = event.target;
       buttonClicked.parentNode.parentNode.remove();
       calculateAll();
